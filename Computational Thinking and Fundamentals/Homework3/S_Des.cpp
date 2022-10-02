@@ -1,7 +1,6 @@
 #include <bits/stdc++.h>
 using namespace std;
-
-//ä¸¤ä¸ªSç›’
+//°Ñ¾ØÕóÖ±½ÓÖÃ»»Îª¶ş½øÖÆ
 int S1[4][4][2]={{{0,1},{0,0},{1,1},{1,0}},
                  {{1,1},{1,0},{0,1},{0,0}},
                  {{0,0},{1,0},{0,1},{1,1}},
@@ -11,11 +10,10 @@ int S2[4][4][2]={{{0,0},{0,1},{1,0},{1,1}},
                  {{1,1},{1,0},{0,1},{0,0}},
                  {{1,0},{0,1},{0,0},{1,1}}};
 
-
-void createkey(int k[11],int k1[9],int k2[9])
+void CreateKey(int k[11],int k1[9],int k2[9])
 {
     int temp[11];
-
+    //P10ÖÃ»»
     temp[1]=k[3],temp[2]=k[5],temp[3]=k[2],temp[4]=k[7],temp[5]=k[4],
     temp[6]=k[10],temp[7]=k[1],temp[8]=k[9],temp[9]=k[8],temp[10]=k[6];
     int l[6],r[6];
@@ -30,7 +28,7 @@ void createkey(int k[11],int k1[9],int k2[9])
     for(int i=1;i<=5;i++)
         temp[i]=l[i],temp[i+5]=r[i];
     k1[1]=temp[6],k1[2]=temp[3],k1[3]=temp[7],k1[4]=temp[4],k1[5]=temp[8],k1[6]=temp[5],k1[7]=temp[10],k1[8]=temp[9];
-    printf("K1:");
+    printf("ÃÜÔ¿K1:");
     int ans=0;
     for(int i=1;i<=8;i++)
     {
@@ -46,7 +44,7 @@ void createkey(int k[11],int k1[9],int k2[9])
     for(int i=1;i<=5;i++)
         temp[i]=l[i],temp[i+5]=r[i];
     k2[1]=temp[6],k2[2]=temp[3],k2[3]=temp[7],k2[4]=temp[4],k2[5]=temp[8],k2[6]=temp[5],k2[7]=temp[10],k2[8]=temp[9];
-    printf("K2:");
+    printf("ÃÜÔ¿K2:");
     ans=0;
     for(int i=1;i<=8;i++)
     {
@@ -55,6 +53,8 @@ void createkey(int k[11],int k1[9],int k2[9])
     }
     printf("\n");
 }
+
+
 void f(int R[],int K[])
 {
     int temp[9];
@@ -63,7 +63,7 @@ void f(int R[],int K[])
     for(int i=1;i<=8;i++)
         temp[i]=temp[i]^K[i];
 
-    printf("ä¸¤æ¬¡å¼‚æˆ–:");
+    printf("Òì»ò½á¹û:");
     int ans=0;
     for(int i=1;i<=8;i++)
     {
@@ -77,8 +77,10 @@ void f(int R[],int K[])
         s1[i]=temp[i],s2[i]=temp[i+4];
     int x1=S1[s1[1]*2+s1[4]][s1[2]*2+s1[3]][0],x2=S1[s1[1]*2+s1[4]][s1[2]*2+s1[3]][1];
     int x3=S2[s2[1]*2+s2[4]][s2[2]*2+s2[3]][0],x4=S2[s2[1]*2+s2[4]][s2[2]*2+s2[3]][1];
+
+    //P4ÖÃ»»
     R[1]=x2,R[2]=x4,R[3]=x3,R[4]=x1;
-    printf("ä¸¤æ¬¡P4:");
+    printf("P4ÖÃ»»½á¹û:");
     ans=0;
     for(int i=1;i<=4;i++)
     {
@@ -86,14 +88,15 @@ void f(int R[],int K[])
         cout<<R[i];
     }
     cout<<endl;
-//å¯¹Rmâ€™åšP4ç½®æ¢ï¼ˆP4={2,4,3,1}ï¼‰
 }
-void Encode(int ming[9],int k1[],int k2[])
+
+void Encrypt(int text[9],int k1[],int k2[])
 {
     int temp[9];
-    //å¯¹å¯†æ–‡m=01110110åšIPç½®æ¢ï¼ˆIP={2,6,3,1,4,8,5,7}ï¼‰
-    temp[1]=ming[2],temp[2]=ming[6],temp[3]=ming[3],temp[4]=ming[1],temp[5]=ming[4],temp[6]=ming[8],temp[7]=ming[5],temp[8]=ming[7];
-    printf("IPç½®æ¢:");
+    //IPÖÃ»»£¨IP={2,6,3,1,4,8,5,7}£©
+    temp[1]=text[2],temp[2]=text[6],temp[3]=text[3],temp[4]=text[1],
+    temp[5]=text[4],temp[6]=text[8],temp[7]=text[5],temp[8]=text[7];
+    printf("IPÖÃ»»:");
     int ans=0;
     for(int i=1;i<=8;i++)
     {
@@ -102,12 +105,11 @@ void Encode(int ming[9],int k1[],int k2[])
     }
     cout<<endl;
     int L0[5],R0[5],L1[5],R1[5],L2[5],R2[5];
-    //è®°å·¦åŠ(é«˜ä½)ä¸ºLm=0100,å³åŠ(ä½ä½)ä¸ºRm=1001
     for(int i=1;i<=4;i++)
         L0[i]=temp[i],R0[i]=temp[i+4];
     memcpy(L1,R0,sizeof(L1));
-    //(2)å¤åˆå‡½æ•°fk1ï¼Œå®ƒæ˜¯ç”±å¯†é’¥Kç¡®å®šçš„ï¼Œå…·æœ‰ç½®æ¢å’Œä»£æ¢çš„è¿ç®—ã€‚
 
+    //¸´ºÏº¯Êıfk1
     printf("L0:");
     ans=0;
     for(int i=1;i<=4;i++)
@@ -115,7 +117,7 @@ void Encode(int ming[9],int k1[],int k2[])
         ans+=L0[i]*(1<<(4-i));
         cout<<L0[i];
     }
-    cout<<endl;
+    cout<<" ";
 
     printf("R0:");
     ans=0;
@@ -125,12 +127,11 @@ void Encode(int ming[9],int k1[],int k2[])
         cout<<R0[i];
     }
     cout<<endl;
-
-
     f(R0,k1);
     for(int i=1;i<=4;i++)
         R1[i]=L0[i]^R0[i];
-    //3)ç½®æ¢å‡½æ•°SW
+
+    //ÖÃ»»º¯Êı
     memcpy(R2,R1,sizeof(R2));
 
     printf("L1:");
@@ -140,7 +141,7 @@ void Encode(int ming[9],int k1[],int k2[])
         ans+=L1[i]*(1<<(4-i));
         cout<<L1[i];
     }
-    cout<<endl;
+    cout<<" ";;
 
     printf("R1:");
     ans=0;
@@ -152,12 +153,10 @@ void Encode(int ming[9],int k1[],int k2[])
     cout<<endl;
 
 
-    //(4)å¤åˆå‡½æ•°fk2
+    //¸´ºÏº¯Êıfk2
     f(R1,k2);
     for(int i=1;i<=4;i++)
         L2[i]=L1[i]^R1[i];
-    // E/Pä¸ºä¸€ä¸ª4ä½åˆ°8ä½çš„å˜æ¢ï¼Œå˜æ¢ç»“æœä¸ºE/P(p1,p2,p3,p4)=(p4,p1,p2,p3,p2,p3,p4,p1)
-
 
     printf("L2:");
     ans=0;
@@ -166,7 +165,7 @@ void Encode(int ming[9],int k1[],int k2[])
         ans+=L2[i]*(1<<(4-i));
         cout<<L2[i];
     }
-    cout<<endl;
+    cout<<" ";
 
     printf("R2:");
     ans=0;
@@ -178,9 +177,10 @@ void Encode(int ming[9],int k1[],int k2[])
     cout<<endl;
 
     temp[1]=L2[4],temp[2]=L2[1],temp[3]=L2[3],temp[4]=R2[1],temp[5]=R2[3],temp[6]=L2[2],temp[7]=R2[4],temp[8]=R2[2];
-    printf("åŠ å¯†åäºŒè¿›åˆ¶ä¸º:");
+    printf("¼ÓÃÜ½á¹û:");
     ans=0;
-    //(5)åˆå§‹ç½®æ¢IPçš„é€†ç½®æ¢IP-1
+
+    //IP-1ÖÃ»»
     for(int i=1;i<=8;i++)
     {
         ans+=temp[i]*(1<<(8-i));
@@ -188,17 +188,141 @@ void Encode(int ming[9],int k1[],int k2[])
     }
     cout<<endl;
 }
+
+void Decrypt(int text[9],int k1[],int k2[])
+{
+    int temp[9];
+    //IPÖÃ»»£¨IP={2,6,3,1,4,8,5,7}£©
+    temp[1]=text[2],temp[2]=text[6],temp[3]=text[3],temp[4]=text[1],
+    temp[5]=text[4],temp[6]=text[8],temp[7]=text[5],temp[8]=text[7];
+    printf("IPÖÃ»»:");
+    int ans=0;
+    for(int i=1;i<=8;i++)
+    {
+        ans+=temp[i]*(1<<(8-i));
+        cout<<temp[i];
+    }
+    cout<<endl;
+    int L0[5],R0[5],L1[5],R1[5],L2[5],R2[5];
+    for(int i=1;i<=4;i++)
+        L0[i]=temp[i],R0[i]=temp[i+4];
+    memcpy(L1,R0,sizeof(L1));
+
+    //¸´ºÏº¯Êıfk1
+    printf("L0:");
+    ans=0;
+    for(int i=1;i<=4;i++)
+    {
+        ans+=L0[i]*(1<<(4-i));
+        cout<<L0[i];
+    }
+    cout<<" ";
+
+    printf("R0:");
+    ans=0;
+    for(int i=1;i<=4;i++)
+    {
+        ans+=R0[i]*(1<<(4-i));
+        cout<<R0[i];
+    }
+    cout<<endl;
+    f(R0,k2);
+    for(int i=1;i<=4;i++)
+        R1[i]=L0[i]^R0[i];
+
+    //ÖÃ»»º¯Êı
+    memcpy(R2,R1,sizeof(R2));
+
+    printf("L1:");
+    ans=0;
+    for(int i=1;i<=4;i++)
+    {
+        ans+=L1[i]*(1<<(4-i));
+        cout<<L1[i];
+    }
+    cout<<" ";;
+
+    printf("R1:");
+    ans=0;
+    for(int i=1;i<=4;i++)
+    {
+        ans+=R1[i]*(1<<(4-i));
+        cout<<R1[i];
+    }
+    cout<<endl;
+
+
+    //¸´ºÏº¯Êıfk2
+    f(R1,k1);
+    for(int i=1;i<=4;i++)
+        L2[i]=L1[i]^R1[i];
+
+    printf("L2:");
+    ans=0;
+    for(int i=1;i<=4;i++)
+    {
+        ans+=L2[i]*(1<<(4-i));
+        cout<<L2[i];
+    }
+    cout<<" ";;
+
+    printf("R2:");
+    ans=0;
+    for(int i=1;i<=4;i++)
+    {
+        ans+=R2[i]*(1<<(4-i));
+        cout<<R2[i];
+    }
+    cout<<endl;
+
+    temp[1]=L2[4],temp[2]=L2[1],temp[3]=L2[3],temp[4]=R2[1],temp[5]=R2[3],temp[6]=L2[2],temp[7]=R2[4],temp[8]=R2[2];
+    printf("½âÃÜ½á¹û:");
+    ans=0;
+
+    //IP-1ÖÃ»»
+    for(int i=1;i<=8;i++)
+    {
+        ans+=temp[i]*(1<<(8-i));
+        cout<<temp[i];
+    }
+    cout<<endl;
+}
+
+
 int main()
 {
+    int mode,plaintext[9],ciphertext[9];
     int k[11],k1[9],k2[9];
-    printf("è¯·è¾“å…¥ä¸»å¯†é’¥K:");
+    printf("ÇëÊäÈëÖ÷ÃÜÔ¿:");
     for(int i=1;i<=10;i++)
+    {
         scanf("%1d",&k[i]);
-    createkey(k,k1,k2);
-    int ming[9];
-    printf("è¯·è¾“å…¥æ˜æ–‡:");
-    for(int i=1;i<=8;i++)
-        scanf("%1d",&ming[i]);
-    Encode(ming,k1,k2);
+    }
+    CreateKey(k,k1,k2);
+    printf("Ä£Ê½²Ëµ¥£º¡¾1¡¿¼ÓÃÜ  ¡¾2¡¿½âÃÜ\n");
+    printf("ÇëÑ¡ÔñÄ£Ê½£º");
+    scanf("%d",&mode);
+    if(mode==1)
+    {
+        printf("ÇëÊäÈëÃ÷ÎÄ:");
+        for(int i=1;i<=8;i++)
+        {
+            scanf("%1d",&plaintext[i]);
+        }
+        Encrypt(plaintext,k1,k2);
+    }
+    else if(mode==2)
+    {
+        printf("ÇëÊäÈëÃÜÎÄ£º");
+        for(int i=1;i<=8;i++)
+        {
+            scanf("%1d",&ciphertext[i]);
+        }
+        Decrypt(ciphertext,k1,k2);
+    }
+    else
+    {
+        printf("ÊäÈë´íÎó£¬ÇëÖØĞÂÊäÈë");
+    }
     return 0;
 }
