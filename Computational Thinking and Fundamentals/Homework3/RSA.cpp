@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-bool judgePrime(int n)    //åˆ¤æ–­ç´ æ•°
+bool judgePrime(int n)    //ÅÐ¶ÏËØÊý
 {
     if(n<=1)  return false;
     if(n==2)  return true;
@@ -12,12 +12,12 @@ bool judgePrime(int n)    //åˆ¤æ–­ç´ æ•°
     return true;
 }
 
-int gcd(int m,int n)    //æ±‚æœ€å¤§å…¬å› æ•°   må¤§äºŽn
+int gcd(int m,int n)    //Çó×î´ó¹«ÒòÊý   m´óÓÚn
 {
     int l=1;
-    if(m<n)
+    if(m<=n)
     {
-        cout<<"é€‰æ‹©çš„eå¤§äºŽç­‰äºŽæ¬§æ‹‰å‡½æ•°\n";
+        cout<<"Ñ¡ÔñµÄe´óÓÚµÈÓÚÅ·À­º¯Êý\n";
         return 0;
     }
     while(m % n !=0){
@@ -65,34 +65,34 @@ int main()
     bool prime=false;
     while(prime== false)
     {
-        cout<<"è¯·è¾“å…¥ä¸¤ä¸ªè´¨æ•°p.qï¼š";
+        cout<<"ÇëÊäÈëÁ½¸öÖÊÊýp.q£º";
         cin>>p>>q;
         if(judgePrime(p)&& judgePrime(q))
             prime=true;
-        else cout<<"è¾“å…¥çš„ä¸¤ä¸ªæ•°ä¸æ˜¯ç´ æ•°\n";
+        else cout<<"ÊäÈëµÄÁ½¸öÊý²»ÊÇËØÊý\n";
     }
     n=p*q;
     m=(p-1)*(q-1);
-    cout<<"æ¬§æ‹‰å‡½æ•°çš„å€¼ä¸ºï¼š"<<m<<endl;
+    cout<<"Å·À­º¯ÊýµÄÖµÎª£º"<<m<<endl;
     prime=false;
     while(prime== false)
     {
-        cout<<"è¯·è¾“å…¥ä¸Žæ¬§æ‹‰å‡½æ•°äº’ç´ ä¸”æ¯”å°äºŽæ¬§æ‹‰å‡½æ•°çš„æ•°ï¼š";
+        cout<<"ÇëÊäÈëÓëÅ·À­º¯Êý»¥ËØÇÒ±ÈÐ¡ÓÚÅ·À­º¯ÊýµÄÊý£º";
         cin>>e;
         if(gcd(m,e)==1)
         {
             prime=true;
             d=calculate_d(e,m);
-            if(d==0)   cout<<"æ•°æ®èŒƒå›´å­˜åœ¨é—®é¢˜"<<endl;
+            if(d==0)   cout<<"Êý¾Ý·¶Î§´æÔÚÎÊÌâ"<<endl;
         }
     }
-    cout<<"å…¬é’¥ï¼š"<<"e="<<e<<" "<<"n="<<n<<endl;
-    cout<<"ç§é’¥ï¼š"<<"d="<<d<<" "<<"n="<<n<<endl;
-    cout<<"è¯·è¾“å…¥ä½ æƒ³è¦åŠ å¯†çš„æ•°ï¼š";
+    cout<<"¹«Ô¿£º"<<"e="<<e<<" "<<"n="<<n<<endl;
+    cout<<"Ë½Ô¿£º"<<"d="<<d<<" "<<"n="<<n<<endl;
+    cout<<"ÇëÊäÈëÄãÏëÒª¼ÓÃÜµÄÊý£º";
     cin>>num;
-    unsigned long long int encode,decode;
+    int encode,decode;
     encode= BigPowerMod(num,e,n);
-    cout<<"åŠ å¯†åŽç»“æžœä¸º"<<encode<<endl;
+    cout<<"¼ÓÃÜºó½á¹ûÎª£º"<<encode<<endl;
     decode= BigPowerMod(encode,d,n);
-    cout<<"è§£å¯†åŽç»“æžœä¸º"<<decode<<endl;
+    cout<<"½âÃÜºó½á¹ûÎª£º"<<decode<<endl;
 }
