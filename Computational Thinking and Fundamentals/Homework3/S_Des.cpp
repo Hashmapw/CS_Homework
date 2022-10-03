@@ -54,7 +54,6 @@ void CreateKey(int k[11],int k1[9],int k2[9])
     printf("\n");
 }
 
-
 void f(int R[],int K[])
 {
     int temp[9];
