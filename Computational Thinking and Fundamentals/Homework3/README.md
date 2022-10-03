@@ -7,7 +7,7 @@
 
 ## 代码实现
 ### AsciiWithCheck.cpp说明
-1. `string ToBinary(int n)`用于实现将十进制的ASCII码转换为二进制的ASCII码。这个过程也可使用itoa库函数来实现，但为了复习十进制转换二进制的原理便没有使用库函数。
+1. `string ToBinary(int n)`函数用于实现将十进制的ASCII码转换为二进制的ASCII码。这个过程也可使用itoa库函数来实现，但为了复习十进制转换二进制的原理便没有使用库函数。
 2. 该程序可在运行时自行选择奇校验或偶校验。
 >参考测试用例：字母C
 
@@ -16,8 +16,8 @@
 >偶校验结果：1000 0111
 
 ### S_Des.cpp说明
-1. `void CreateKey(int k[11],int k1[9],int k2[9])`函数用于将主密钥分成子密钥，参数列表共三个参数，其中第一个为主密钥，第二个为密钥K1，第三个为密钥K2
-2. `void f(int R[],int K[])`函数用于实现S_Des加解密过程中的f函数的功能，参数列表中第一个参数为R0/R1，第二个参数为K1/k2
+1. `void CreateKey(int k[11],int k1[9],int k2[9])`函数用于将主密钥分成子密钥，参数列表共三个参数，其中第一个为主密钥，第二个为密钥K1，第三个为密钥K2。
+2. `void f(int R[],int K[])`函数用于实现S_Des加解密过程中的f函数的功能，参数列表中第一个参数为R0/R1，第二个参数为K1/k2。
 3. `void Encrypt(int text[9],int k1[],int k2[])`用于驱动S_Des的加密过程，参数列表共三个参数，其中第一个为待加密的明文，第二个和第三个参数分别为K1和K2密钥，此函数中需要调用f函数。
 4. `void Decrypt(int text[9],int k1[],int k2[])`用于驱动S_Des的解密过程，参数列表共三个参数，其中第一个为待解密的密文，第二个和第三个参数分别为K1和K2密钥，此函数中需要调用f函数。
 >参考测试用例：字母C
@@ -29,4 +29,12 @@
 >密文：10101010
 
 ### RSA.cpp说明
-还在完成中，请稍后
+1. `bool judgePrime(int n)`函数用来实现质数的判断，防止初始输入的p和q本身不是质数，从而得到错误的结果。
+2. `int gcd(int m,int n) `函数用来求输入值e和欧拉函数φ(n)的最大公约数。根据算法的实际需要，在这个过程中还加入了输入值e和欧拉函数φ(n)的大小判断，防止输入值e大于欧拉函数φ(n)的值。
+3. `int calculate_d(int e,int m)`函数用来求私钥中的d，使用穷举搜索的方式找到的私钥中的d。
+4. `int BigPowerMod(int num,int power,int mod) `函数用来实现幂的模分解，从而实现超出long long int范围的大数求幂。
+
+## 参考内容
+[1]数据结构与算法分析：C++语言描述（第四版） [Data Structures and Algorithm Analysis in C++, Fou] / (美)Mark Allen Weiss著 冯舜玺 译/9787121290572
+
+[2] 应用密码学：协议、算法与C源程序 / (美)Bruce Schneier著 吴世忠，祝世雄，张文政等译 /9787111445333

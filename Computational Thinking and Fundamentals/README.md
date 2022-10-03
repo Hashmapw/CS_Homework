@@ -1,4 +1,5 @@
 # 计算思维与计算机素养
+> PS：此链接中的作业，往往会在作业截止前几小时或作业截止后才会更新。在此之前，作业都被我提交到了私人仓库之中。
 ## 第一次作业
 Teacher：冷艳梅
 ![Picture](https://raw.githubusercontent.com/Hashmapw/CS_Homework/main/Computational%20Thinking%20and%20Fundamentals/Homework1/Homework.png)
