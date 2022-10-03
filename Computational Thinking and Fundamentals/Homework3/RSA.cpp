@@ -28,7 +28,7 @@ int gcd(int m,int n)    //求最大公因数
     return l;
 }
 
-int calculate_d(int e,int m)
+int calculate_d(int e,int m)  //计算私钥d
 {
     for(int k=1;;k++)
     {
@@ -42,7 +42,7 @@ int calculate_d(int e,int m)
     return 0;
 }
 
-int BigPowerMod(int num,int power,int mod)
+int BigPowerMod(int num,int power,int mod)  //幂求模分解运算
 {
     int ans=1;
     num=num%mod;
