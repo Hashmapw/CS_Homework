@@ -12,7 +12,7 @@ bool judgePrime(int n)    //判断素数
     return true;
 }
 
-int gcd(int m,int n)    //求最大公因数   m大于n
+int gcd(int m,int n)    //求最大公因数
 {
     int l=1;
     if(m<=n)
