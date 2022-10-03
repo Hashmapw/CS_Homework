@@ -42,20 +42,20 @@ int calculate_d(int e,int m)
     return 0;
 }
 
-int BigMod(int num, int power, int mod)
+int BigPowerMod(int num,int power,int mod)
 {
-    long long result = num;
-    long long temp = 1;
-
-    while (power > 0) {
-        if (power && 1) {
-            // 如果幂为奇数，再乘一次
-            temp = (temp % mod) * (result % mod) % mod;
+    int ans=1;
+    num=num%mod;
+    while(power>0)
+    {
+        if(power%2==1)
+        {
+            ans=(ans*num)%mod;
         }
-        result = (result % mod) * (result % mod) % mod;
-        power /= 2;
+        power/=2;
+        num=num*num%mod;
     }
-    return result;
+    return ans;
 }
 
 
@@ -91,8 +91,8 @@ int main()
     cout<<"请输入你想要加密的数：";
     cin>>num;
     unsigned long long int encode,decode;
-    encode= BigMod(m,e,n);
+    encode= BigPowerMod(num,e,n);
     cout<<"加密后结果为"<<encode<<endl;
-    decode= BigMod(encode,d,n);
+    decode= BigPowerMod(encode,d,n);
     cout<<"解密后结果为"<<decode<<endl;
 }
