@@ -33,6 +33,19 @@
 2. `int gcd(int m,int n) `函数用来求输入值e和欧拉函数φ(n)的最大公约数。根据算法的实际需要，在这个过程中还加入了输入值e和欧拉函数φ(n)的大小判断，防止输入值e大于欧拉函数φ(n)的值。
 3. `int calculate_d(int e,int m)`函数用来求私钥中的d，使用穷举搜索的方式找到的私钥中的d。
 4. `int BigPowerMod(int num,int power,int mod) `函数用来实现幂的模分解，从而实现超出long long int范围的大数求幂。
+> 参考测试用例：
+
+>两个质数：p=7 q=11
+
+>任取互质：e=13
+
+>加密数字：m=19
+
+>公钥：e=13 n=77
+
+>私钥：d=37 n=77
+
+> 加密后结果：61
 
 ## 参考内容
 [1]数据结构与算法分析：C++语言描述（第四版） [Data Structures and Algorithm Analysis in C++, Fou] / (美)Mark Allen Weiss著 冯舜玺 译/9787121290572
