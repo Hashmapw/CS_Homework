@@ -3,7 +3,7 @@ from efficient_apriori import apriori
 
 def load_data(path):  # 文件所在的路径
     content = []  # 用来存放处理后的内容
-    with open(path, encoding="UTF-8") as f:
+    with open(path) as f:
         for line in f:
             line = line.strip("\n")
             content.append(line.split(","))
@@ -11,7 +11,7 @@ def load_data(path):  # 文件所在的路径
 
 
 if __name__ == '__main__':
-    dataset = load_data("data.txt")
+    dataset = load_data("Market_Basket_Optimisation.txt")
     print(len(dataset))
     for i in range(10):
         print(i + 1, dataset[i], sep=",")
