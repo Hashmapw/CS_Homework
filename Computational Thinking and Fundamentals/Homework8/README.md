@@ -88,7 +88,7 @@
 
 ##### 2.3.4 提升度
 
-关联规则($A→B$)中，提升度为($A→B$的置信度)，除以B的支持度。
+关联规则( $A→B$ )中，提升度为( $A→B$ 的置信度)，除以B的支持度。
 
 \[lift(A \to B) = \frac{{confidence(A \to B)}}{{support(B)}} = \frac{{P(B|A)}}{{P(B)}} = \frac{{P(AB)}}{{P(A)P(B)}}\]
 
