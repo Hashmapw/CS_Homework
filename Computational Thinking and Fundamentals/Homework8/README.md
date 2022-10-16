@@ -172,13 +172,14 @@ Apriori算法流程如下：
 
 #### 2.7 程序实现
 #### 2.7.1 加载数据集
-**数据来源：** [kaggle(Groceries Market Basket Dataset)](https://www.kaggle.com)
+**数据来源：** [kaggle(Market Basket Optimisation)](https://www.kaggle.com/datasets/d4rklucif3r/market-basket-optimisation)
+
 
 首先，我们需要从文件中读取数据。
 
 ```python
-def load_data(path):  #文件所在的路径
-    content=[]        #用来存放处理后的内容
+def load_data(path):  # 文件所在的路径
+    content=[]        # 用来存放处理后的内容
     with open(path,encoding="UTF-8") as f:
         for line in f:
             line=line.strip("\n")
@@ -187,14 +188,14 @@ def load_data(path):  #文件所在的路径
 ```
 
 ```python
-dataset=load_data("data.txt")#dataset是二维列表，每个元素是一个一维列表，保存着每个购物清单的商品记录
+dataset=load_data("data.txt")# dataset是二维列表，每个元素是一个一维列表，保存着每个购物清单的商品记录
 print(len(dataset))
 ```
 
 然后，我们来浏览数据的大致形式。由于记录较多，我们这里仅查看前10条记录（订单）。
 
 ```python
-#print(dataset[:10])  #太丑了
+# print(dataset[:10])  #太丑了
 for i in range(10):
         print(i + 1, dataset[i], sep=",")
 ```
@@ -208,9 +209,9 @@ from efficient-apriori import apriori
 # transactions：交易数据，要求为二位数据结构，每个维度用来存放每个购物清单的商品。
 # min_support:最小支持度
 # min_confidence:最小置信度
-itemsets,rules=apriori(transaction=dataset,min_support=0.05,min_confidence=0.3)  #apriori函数回返回满足条件的频繁项集
-print(itemsets)  #输出所有满足条件频繁k项集
-print(rules)  #输出关联规则
+itemsets,rules=apriori(transaction=dataset,min_support=0.05,min_confidence=0.3)  # apriori函数回返回满足条件的频繁项集
+print(itemsets)  # 输出所有满足条件频繁k项集
+print(rules)  # 输出关联规则
 ```
 
 apriori函数返回的关联规则列表，每个元素为efficient_apriori.rules.Rule类型，我们可以输出这些对象，能看到更加详细的信息：
@@ -240,9 +241,176 @@ print("确信度",r.conviction)
 ```
 
 #### 2.7.3 手写Apriori算法
+##### 2.7.3.1 加载数据集
+同2.7.1，不再赘述
 
+##### 2.7.3.2 编码转换
+数据集中含有的文本数据，虽然也能够操作，但会影响性能，也将带来一定的繁琐，为了方便起见，我们对文本进行编码，将其转换为数值类型。
 
+```python
+import itertools
+items=set(itertools.chain(*dataset))   #二维列表扁平化
+str_to_index={} # 用来保存字符串到编码的映射
+index_to_str={} # 用来保存编码到字符串的映射
 
+for index,item in enumerate(items):
+    str_to_index[item]=index
+    index_to_str[index]=item
+
+# 输出结果
+for item in list(str_to_index.items())[:5]:
+    print(item)
+for item in list(index_to_str.items())[:5]:
+    print(item)
+```
+
+我们将原始数据进行转换，由字符串映射为数值索引。
+
+```python
+for i in range(len(dataset)):
+    for j in range(len(dataset)):
+        dataset[i][j]=str_to_index[dataset[i][j]]
+for i in range(10):  # 输出结果
+    print(i+1,dataset[i],sep="->")
+```
+
+##### 2.7.3.3 生成候选1项集列表
+
+接下来，我们来扫描加载后的数据集，生成候选1项集列表。因为候选1项集列表是从原始数据集中生成的，因此，列表中的每个元素就是数据集中不重复的对象。为了方便后面的操作，我们把每个对象放入frozenset中。**将每个对象放入frozenset而不是放入set里面主要是为了将元素作为字典的key，set作为可变变量其为不可哈希的，作为字典的key必须是可哈希的。**
+
+```python
+def buildC1(dataset):
+    item1=set(itertools.chain(*dataset))
+    return [frozenset([i]) for i in item1]
+
+c1=buildC1(dataset)
+```
+
+##### 2.7.3.4 根据候选1项集生成频繁1项集
+
+当生成候选1集列表后，我们就可以根据候选1集合列表，生成频繁1项集字典，字典中的key为frozenset类型的对象，该key对象是我们要分析的项集，字典的value为每个项集对应的支持度。
+
+```python
+def ck_to_lk(dataset,ck,min_support):
+    support=[]   # 定义项集-频数字典，用来存储每个项集(key)与其对应的频数(value)
+    for row in dataset:
+        for item in ck:
+            if item.issubset(row):  #判断项集是否在记录（行）中出现
+                support[item]=support.get(item,0)+1
+    total=len(dataset)
+    return {k:v/total for k,v in support items() if v/ total >= min support}
+
+L1=ck_to_lk(dataset,c1,0.05)
+```
+##### 2.7.3.5 频繁k项集组合成候选k+1项集
+
+当产生频繁k项集后，我们需要对频繁k项集中的元素进行组合，如果组合后的项集数量为k+1，则保留此种组合，否则，丢弃此种组合。
+
+```python
+def lk_to_ck(lk_list):
+    ck=set()  # 保存所有组合之后的候选k+1项集
+    lk_size=len(lk_list)
+    if lk_size>1:  # 如果频率k项集的数量小于1，则不可能通过组合生成k+1项集，直接返回空set即可
+        k=len(lk_list[0])  #获取频繁k项集的k值
+        for i,j in itertools.combinations(range(lk_size),2):
+            t= lk_list[i] | lk_list[j]    #将对应位置的两个频繁k项集进行组合，生成一个新的项集
+            if len(t)==k+1: #如果组合之后的项集是k+1项集，则为候选k+1项集，加入结果到set中
+                ck.add(t)
+    return ck
+
+c2=lk_to_ck(list(L1.keys()))
+```
+
+生成候选2项集后，我们继续调用`ck_to_lk`函数，生成频繁2项集，如此进行，直到不能再产生项集为止
+
+```python
+c2=ck_to_lk(dataset,c2,0.05)
+```
+
+##### 2.7.3.6 生成所有频繁项集
+
+我们可以定义一个函数，将之前的步骤进行组合，从而能够从原始数据集中，生成所有的频繁项集。
+
+```python
+def get_L_all(dataset,min_support):
+    c1=buildC1(dataset)
+    L1=ck_to_lk(dataset,c1,min_support)
+
+    L_all=L1 # 定义字典，保存所有的频繁k项集
+    Lk=L1
+    while len(Lk)>1: # 当频繁项集中的元素（键值对）大于1时，才有可能组合生成候选k+1项集
+        lk_key_list=list(Lk.keys())
+        ck=lk_to_ck(lk_key_list)  # 由频繁k项集生成候选k+1项集
+        Lk=ck_to_lk(dataset,ck,min_support) # 由候选k+1项集生成频繁k+1项集
+        if len(Lk)>0:  # 如果频繁k+1项集字典不为空，则将所有频繁k+1项集加入到L_all字典中
+            L_all=all.update(Lk)
+        else:
+            break # 否则，频繁k+1项集为空，退出循环
+    return L_all
+
+L_all=get_L_all(dataset,0.05)
+```
+##### 2.7.3.7 生成关联规则
+
+编写一个函数，用于从一个频繁项集中，生成关联规则。
+```python
+def rules_from_item(item):
+    left=[]  #定义规则左侧的列表
+    for i in range(1,len(item)):
+        left.extend(itertools.combinations(item,1))
+    return [(frozenset(le),frozenset(item.difference(le))) for le in left]
+
+rules_from_item(frozenset({1,2,3}))
+```
+
+当生成包含所有频繁k项集的字典后，我们就可以遍历字典中的每一个键（频繁项集），进而计算该频繁项集的所有可能的关联规则，然后对每一个可能的关联规则，计算置信度，保留符合最小置信度的关联规则。
+
+```python
+def rules_from_L_all(L_all,min_confidence):
+    rules=[]   #保存所有候选的关联规则
+    for Lk in L_all:
+        #如果频繁项集的元素个数为1，则无法生成关联规则，不予考虑
+        if len(Lk)>1:
+            rules.extend(rules_from_item(Lk))
+    result=[]
+    for left,right in rules:
+        support=L_all[left|right]
+        confidence=support/L_all[left]
+        lift=confidence>=min_confidence
+        if confidence>min_confidence:
+            result.append({"左侧"：left,"右侧":right,"支持度":support,"置信度":confidence,"提升度":lift})
+    return result
+
+rules_from_L_all(L_all,0.3)
+```
+##### 2.7.3.8 最终程序
+
+将之前的程序进行合并，写成最终一个函数，能够从原始数据集中，生成关联规则。
+
+```python
+def apriori(dataset,min_support,min_confidence):
+    L_all=get_L_all(dataset,min_support)
+    rules=rules_from_L_all(L_all,min_confidence)
+    return rules
+
+rules=apriori(dataset,0.05,0.3)
+```
+
+最后，我们将代码转换为真实的对象名称，同时，为了能够清晰呈现数据，我们使用DataFrame对象来进行展示。
+```python
+import pandas as pd
+
+def change(item):
+    li=list(item)
+    for i in range(len(li)):
+        li[i]=index_to_str[li[i]]
+    return li
+
+df=pd.DataFrame(rules)
+df=df.reindex("左侧","右侧","支持度","置信度","提升度",axis=1)
+df["左侧"]=df["左侧"].apply(change)
+df["右侧"]=df["右侧"].apply(change)
+```
 
 ## 作业反思
 1. 可以进一步学习FP-tree和FP-growth算法
