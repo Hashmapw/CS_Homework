@@ -75,14 +75,15 @@
 
 支持度为某项集在数据集中出现的频率，即项集在记录中出现的次数，除以数据集中所有记录的数量。
 
-\[support(A) = \frac{{count(A)}}{{count(dataset)}} = P(A)\]
+support(A) = \frac{{count(A)}}{{count(dataset)}} = P(A)
 
  支持度体现的是某项集的频繁程度，只有某项集的支持度达到一定程度，我们才有研究该项集的必要。
 
 ##### 2.3.3 置信度
 
-关联规则（$A→B$）中，置信度为A与B同时出现的次数，除以A出现的次数。
-\[confidence(A \to B) = \frac{{count(AB)}}{{count(A)}} = \frac{{\frac{{count(AB)}}{{count(dataset)}}}}{{\frac{{count(A)}}{{count(dataset)}}}} = \frac{{P(AB)}}{{P(A)}} = P(B|A)\]
+关联规则（ $A→B$ ）中，置信度为A与B同时出现的次数，除以A出现的次数。
+
+confidence(A \to B) = \frac{{count(AB)}}{{count(A)}} = \frac{{\frac{{count(AB)}}{{count(dataset)}}}}{{\frac{{count(A)}}{{count(dataset)}}}} = \frac{{P(AB)}}{{P(A)}} = P(B|A)
 
 置信度体现的是关联规则的可靠程度，如果关联规则（$A→B$）的置信度较高，则说明当A发生时，B也有很大概率也会发生，这样就可能会带来研究价值。
 
@@ -90,7 +91,7 @@
 
 关联规则( $A→B$ )中，提升度为( $A→B$ 的置信度)，除以B的支持度。
 
-\[lift(A \to B) = \frac{{confidence(A \to B)}}{{support(B)}} = \frac{{P(B|A)}}{{P(B)}} = \frac{{P(AB)}}{{P(A)P(B)}}\]
+lift(A \to B) = \frac{{confidence(A \to B)}}{{support(B)}} = \frac{{P(B|A)}}{{P(B)}} = \frac{{P(AB)}}{{P(A)P(B)}}
 
 提升度体现的是组合（应用关联规则）相对不组合（不应用关联规则）的比值，如果提升度大于1，则说明应用该关联规则是有价值的。如果提升度小于1，说明应用该关联规则起到了负面影响。因此，我们应该尽可能让关联规则的提升度大于1，提升值越大，则应用该关联规则的效果越好。
 
@@ -145,7 +146,9 @@ Apriori算法流程如下：
 * 所有候选$k$项集支持度都低于指定的阈值（最小生成度），无法生成频繁$k$项集。
   
 > 说明：
+>
 > ${C_k}$：所有的候选$k$项集
+> 
 > ${L_k}$：所有的频繁$k$项集
 
 ![5](Picture/5.png)
