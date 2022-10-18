@@ -2,6 +2,11 @@
 
 任课老师：蒲晓
 
+## 作业说明
+1. README.md为作业主文档（采用MARKDOWN格式编写，输出格式为html和pdf）
+2. Code/Market_Basket_Optimisation.txt为本次Apriori算法所使用的数据集，来自[kaggle(Market Basket Optimisation)](https://www.kaggle.com/datasets/d4rklucif3r/market-basket-optimisation)
+3. Code/Apriori_Pip.py为使用Python第三库接口实现Apriori算法
+4. Code/Apriori_Manuscript.py为使用Python手写实现Apriori（未使用第三方库）
 
 ## 作业内容
 ### 1. 数据挖掘、人工智能和机器学习的区别和联系
@@ -61,7 +66,7 @@
 例如，在下面的水果购物清单中：
 
 |购物清单|
-|---|
+|:---:|
 |苹果、香蕉、葡萄|
 |苹果、桔子|
 |苹果、火龙果|
@@ -191,7 +196,8 @@ def load_data(path):  # 文件所在的路径
 ```
 
 ```python
-dataset=load_data("data.txt")# dataset是二维列表，每个元素是一个一维列表，保存着每个购物清单的商品记录
+dataset=load_data("data.txt")
+# dataset是二维列表，每个元素是一个一维列表，保存着每个购物清单的商品记录
 print(len(dataset))
 ```
 
@@ -212,7 +218,8 @@ from efficient-apriori import apriori
 # transactions：交易数据，要求为二位数据结构，每个维度用来存放每个购物清单的商品。
 # min_support:最小支持度
 # min_confidence:最小置信度
-itemsets,rules=apriori(transaction=dataset,min_support=0.05,min_confidence=0.3)  # apriori函数回返回满足条件的频繁项集
+itemsets,rules=apriori(transaction=dataset,min_support=0.05,min_confidence=0.3)  
+# apriori函数回返回满足条件的频繁项集
 print(itemsets)  # 输出所有满足条件频繁k项集
 print(rules)  # 输出关联规则
 ```
@@ -381,7 +388,8 @@ def rules_from_L_all(L_all, min_confidence):
         confidence = support / L_all[left]
         lift = confidence >= min_confidence
         if confidence > min_confidence:
-            result.append({"左侧": left, "右侧": right, "支持度": support, "置信度": confidence, "提升度": lift})
+            result.append({"左侧": left, "右侧": right, 
+            "支持度": support, "置信度": confidence, "提升度": lift})
     return result
 
 rules_from_L_all(L_all,0.3)
@@ -417,4 +425,5 @@ df["右侧"]=df["右侧"].apply(change)
 
 ## 作业反思
 1. 本次编码方式是将购物清单内物品转换为数字，其实也可以转换为bool值。可调用mlxtend包中的TransactionEncoder。
-2. 可以进一步学习FP-tree和FP-growth算法
+2. 本次使用的数据集来自国外，最终挖掘结果不符合国人基本认知，如[spaghetti]<->[mineral_water],[chocolate]<->[mineral_water],挖掘产生的关联关系与实际认知偏差较大，下次可以找一些国内的数据集。
+3. 可以进一步学习FP-tree和FP-growth算法
